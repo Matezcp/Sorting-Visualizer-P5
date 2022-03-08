@@ -20,7 +20,7 @@ var sorter // <-- Get the sorting function that will be executed
 */
 function newValues() {
   for(let i = 0;i<values.length;i++){
-    values[i] = random(windowHeight*3/4)
+    values[i] = random(windowHeight*5/6)
   }
 }
 
@@ -60,24 +60,25 @@ function sleep(ms){
 * Executed 1 time when the program starts
 */
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  canva = createCanvas(windowWidth,windowHeight);
 
   //Slider to change the num of values
   sliderNumValues = createSlider(3,100,20,1)
-  sliderNumValues.position(12,windowHeight/8)
-  sliderNumValues.style('width', '80px');
-  sliderNumValues.size(Math.min(windowWidth/4,250))
+  sliderNumValues.position(windowWidth/4,10)
+  sliderNumValues.size(windowWidth/6)
 
   //Slider to change the speed of visualization
   sliderSpeed = createSlider(0,99,75)
-  sliderSpeed.position(windowWidth-windowHeight/8-50,windowHeight/8)
+  sliderSpeed.position(windowWidth-2*windowWidth/6,10)
+  sliderSpeed.size(windowWidth/6)
 
   //Select to select the sorting algorithm
   selectSorter = createSelect()
-  selectSorter.position(windowWidth/2,windowHeight/9)
+  selectSorter.position(windowWidth/10,10)
   selectSorter.option("BubbleSort")
   selectSorter.selected("BubbleSort")
   selectSorter.changed(setNewSorter)
+  selectSorter.addClass("select")
 
   //Set the sorter
   setNewSorter()
@@ -86,12 +87,14 @@ function setup() {
   buttonNewValues = createButton("New Values")
   buttonNewValues.position(10,10)
   buttonNewValues.mousePressed(newValues)
+  buttonNewValues.addClass("buttonNewValues")
 
   //Button to sort the values
   buttonSortValues = createButton("Sort")
   buttonSortValues.position(windowWidth/2,10)
   buttonSortValues.mousePressed(sorter)
-  
+  buttonSortValues.addClass("buttonSort")
+
   //Set the array
   setValues(round(windowWidth/2))
   numValues = round(windowWidth/2)
@@ -106,28 +109,22 @@ function draw() {
   background("#219ebc")
   //Menu de opções
   fill("#fb8500")
-  rect(0,0,windowWidth,windowHeight/6)
+  rect(0,0,windowWidth,windowHeight/20)
 
   //Infos
   //#######################
-  //Text of the slider to change num of values
-  textSize(20)
-  textFont('Arial');
-  textStyle(BOLD);
-  fill(255);
-  text("Num of values",10,windowHeight/9)
   //Text of the slider to change the speed of visualization
   textSize(20)
   textFont('Arial');
   textStyle(BOLD);
   fill(255);
-  text("Speed",windowWidth-windowHeight/8-50,windowHeight/9)
+  text("Speed",windowWidth-windowWidth/6+20,25)
   //Display num of values
   textSize(20)
   textFont('Arial');
   textStyle(BOLD);
   fill(255)
-  text(numValues,Math.min(windowWidth/4,250)+20,(windowHeight/7)+4)
+  text(numValues,10*windowWidth/24+20,25)
   //#######################
 
   //Número de valores

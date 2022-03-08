@@ -1,1 +1,57 @@
 body{padding: 0;margin: 0;overflow: hidden;}
+
+.buttonSort, .buttonNewValues{
+	background-color:#63b8ee;
+	border-radius:3px;
+    border-width: 0;
+	cursor:pointer;
+	color:#14396a;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:2px 20px;
+	text-decoration:none;
+}
+.buttonSort:hover, .buttonNewValues:hover{
+	background-color:#468ccf;
+}
+.buttonSort:active, .buttonNewValues:active{
+	position:relative;
+	top:1px;
+}
+
+.buttonSort{
+    padding:2px 30px;
+}
+
+.select {
+    font-family: 'Arial';
+    cursor: pointer;
+    padding:2px 20px;
+    outline: 0;
+    border: 0px solid #000000;
+    border-radius: 3px;
+    background: #63b8ee;
+    color: #000000;
+    font-weight: bold;
+    font-size: 13px;
+}
+.select::-ms-expand {
+    display: none;
+}
+.select:hover,
+.select:focus {
+    color: #000000;
+    background: #468ccf;
+}
+.select:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.select:hover ~ .select_arrow,
+.select:focus ~ .select_arrow {
+    border-top-color: #000000;
+}
+.select:disabled ~ .select_arrow {
+    border-top-color: #cccccc;
+}
