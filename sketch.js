@@ -8,7 +8,6 @@ var selectSorter // <-- Select to select the sorting algorithm
 var buttonNewValues // <-- Button to get new values
 var buttonSortValues // <-- Button to sort the values
 var numValues // <-- Current length of the array values
-var sorter // <-- Get the sorting function that will be executed
 //#####################################
 
 
@@ -37,9 +36,14 @@ function setValues(num){
 /*
 * Set the var sorter to the select sorter
 */
-function setNewSorter(){
-  if(selectSorter.value() == "BubbleSort"){
-    sorter = bubbleSort
+function sorter(){
+  selectValue = selectSorter.value()
+  console.log(selectValue)
+  if(selectValue == "BubbleSort"){
+    bubbleSort()
+  }
+  else if(selectValue == "Insertion Sort"){
+    insertionSort()
   }
 }
 
@@ -76,12 +80,9 @@ function setup() {
   selectSorter = createSelect()
   selectSorter.position(windowWidth/10,10)
   selectSorter.option("BubbleSort")
+  selectSorter.option("Insertion Sort")
   selectSorter.selected("BubbleSort")
-  selectSorter.changed(setNewSorter)
   selectSorter.addClass("select")
-
-  //Set the sorter
-  setNewSorter()
 
   //Button to get new values
   buttonNewValues = createButton("New Values")
@@ -187,6 +188,26 @@ async function bubbleSort(){
       }
     }
     types[values.length-1-i] = -1
+  }
+}
+
+/*
+* Asynchronous Insertion Sort algorithm
+*/
+async function insertionSort(){
+  for(let i = 1;i < values.length; i++){
+    let current = values[i]
+    let j = i-1
+    types[j] = 0
+    while((j>-1) && (values[j] > current)){
+      types[j] = 0
+      await sleep(100-sliderSpeed.value())
+      types[j] = -1
+      values[j+1] = values[j]
+      j--
+    }
+    types[j] = -1
+    values[j+1] = current
   }
 }
 //#####################################
