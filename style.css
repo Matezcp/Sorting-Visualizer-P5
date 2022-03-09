@@ -36,12 +36,39 @@ body{padding: 0;margin: 0;overflow: hidden;}
 .divNumValues{
     font-weight: bold;
     color: #000000;
+    background: #63b8ee;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5vw;
+    pointer-events:none;
 }
 
 .slider{
+    all:unset;
+    all:initial;
+}
+
+.slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 100%;
     cursor: pointer;
+    background: #63b8ee;
+    border-radius: 0px;
+    border: 0px;
+}
+
+.slider::-webkit-slider-runnable-track:hover{
+    background: #468ccf;
+}
+
+.slider::-webkit-slider-thumb {
+    border: 0px;
+    height: 100%;
+    width: 10%;
+    border-radius: 0px;
+    background: #8ecae6;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -0.5px;
 }
