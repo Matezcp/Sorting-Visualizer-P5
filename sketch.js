@@ -48,6 +48,9 @@ function sorter(){
   else if(selectValue == "Insertion Sort"){
     insertionSort()
   }
+  else if(selectValue == "QuickSort"){
+    quickSort(0,numValues-1)
+  }
 }
 
 /*
@@ -77,7 +80,7 @@ function setup() {
   
    //Set the array
    setValues(40)
-   numValues = 50
+   numValues = 40
 
    //Div to display the current num of values
    divNumValues = createDiv(40)
@@ -104,6 +107,7 @@ function setup() {
   selectSorter.size(windowWidth/5,windowHeight/16)
   selectSorter.option("BubbleSort")
   selectSorter.option("Insertion Sort")
+  selectSorter.option("QuickSort")
   selectSorter.selected("BubbleSort")
   selectSorter.addClass("select")
 
@@ -120,7 +124,6 @@ function setup() {
   buttonSortValues.size(windowWidth/5,windowHeight/16)
   buttonSortValues.mousePressed(sorter)
   buttonSortValues.addClass("buttonSort")
-
 }
 
 /*
@@ -157,9 +160,9 @@ function draw() {
 
 
 //#####################################
-//Auxiliar Sort Algoriths Functions
+//Auxiliar Sort Algorithms Functions
 /*
-* Swap 2 values in the values array in a asynchronous way (used by Bubblesort)
+* Swap 2 values in the values array in a asynchronous way (used by Bubblesort and QuickSort)
 * @param index1 - index of first element to be swapped
 * @param index2 -index of second element to be swapped
 */
@@ -168,8 +171,56 @@ async function swap(index1,index2){
   let tmp = values[index1]
   values[index1] = values[index2]
   values[index2] = tmp
+
+  tmp = types[index1]
   types[index1] = -1
-  types[index2] = 0
+  types[index2] = tmp
+}
+
+/*
+* Make the partition for the quickSort Algorithm
+* @param start - index that starts the partition
+* @param end - index that ends the partition
+*/
+async function partition(start,end){
+  let pivotIndex = end
+  let pivot = values[end]
+  let left = start
+  let rigth = end-1
+
+  types[pivotIndex] = 1
+
+  while(left <= rigth){
+    types[left] = 0
+    while(values[left] < pivot){
+      await sleep(100-sliderSpeed.value())
+      types[left]  = -1
+      left++
+      types[left] = 0
+    }
+    types[left] = -1
+
+    types[rigth] = 0
+    while(values[rigth] >= pivot){
+      await sleep(100-sliderSpeed.value())
+      types[rigth] = -1
+      rigth--
+      types[rigth] = 0
+    }
+    types[rigth] = -1
+
+
+    if(left <= rigth){
+      await swap(left,rigth)
+      left++
+      rigth--
+    }
+  }
+
+  //Put the pivot in place
+  await swap(left,end)
+
+  return left
 }
 //#####################################
 
@@ -216,8 +267,20 @@ async function insertionSort(){
 /* 
 * Asynchronous QuickSort algorithm
 */
-async function quickSort(left,rigth){
+async function quickSort(start,end){
+  if(start >= end){
+    return
+  }
 
+  let pivotIndex = await partition(start,end)
+
+  types[pivotIndex] = -1
+
+  //await Promise.all([quickSort(start,pivotIndex-1),quickSort(pivotIndex+1,end)])
+  await quickSort(start,pivotIndex-1)
+  await quickSort(pivotIndex+1,end)
+
+  return
 }
 
 //#####################################
