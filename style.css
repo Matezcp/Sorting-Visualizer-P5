@@ -8,6 +8,7 @@ body{padding: 0;margin: 0;overflow: hidden;}
 	font-family:Arial;
 	font-weight:bold;
 	text-decoration:none;
+    font-size: 1.5vw;
 }
 .buttonSort:hover, .buttonNewValues:hover{
 	background-color:#468ccf;
@@ -25,27 +26,18 @@ body{padding: 0;margin: 0;overflow: hidden;}
     font-weight: bold;
     text-align: center;
     border: none;
+    font-size: 1.5vw;
 }
 .select:hover{
     color: #000000;
     background: #468ccf;
 }
 
-input {
-    all: initial;
-    all: unset;
-    background-color: #63b8ee;
-	color: #000000;
-	border-width: 0;
+.divNumValues{
     font-weight: bold;
-    text-align: center;
-}
-
-input:hover{
-    background-color: #468ccf;
-}
-
-.slider{
     color: #000000;
-    background-color: #63b8ee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vw;
 }

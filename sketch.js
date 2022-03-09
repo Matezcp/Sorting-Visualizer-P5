@@ -2,12 +2,14 @@
 //Global Variables
 var values // <-- Array to sort
 var types // <-- Type of each value in the array (to color the bars)
-var inputNumValues // <-- Input to change num of values
+var sliderNumValues// <-- Slider to change the num of values
 var sliderSpeed // <-- Slider to change the speed of visualization
 var selectSorter // <-- Select to select the sorting algorithm
 var buttonNewValues // <-- Button to get new values
 var buttonSortValues // <-- Button to sort the values
 var numValues // <-- Current length of the array values
+var divNumValues// <-- Div to display the current num of values
+var divSpeedText// <-- Div to indicate that sliderSpeed changes the speed
 //#####################################
 
 
@@ -28,6 +30,7 @@ function newValues() {
 * @param num - Length of the array
 */
 function setValues(num){
+  numValues = num
   values = new Array(num)
   types = new Array(num).fill(-1)
   newValues()
@@ -66,20 +69,33 @@ function sleep(ms){
 function setup() {
   canva = createCanvas(windowWidth,windowHeight);
 
-  console.log(windowHeight)
-  console.log(windowWidth)
   //Slider to change the num of values
-  inputNumValues = createInput("50","number")
-  inputNumValues.attribute("min",3)
-  inputNumValues.attribute("max",windowWidth-1)
-  inputNumValues.position(3*windowWidth/5,0)
-  inputNumValues.size(windowWidth/5,windowHeight/16)
+  sliderNumValues = createSlider(3,200,40,1)
+  sliderNumValues.position(3*windowWidth/5,0)
+  sliderNumValues.size(2*windowWidth/15,windowHeight/16)
+  
+   //Set the array
+   setValues(40)
+   numValues = 50
+
+   //Div to display the current num of values
+   divNumValues = createDiv(40)
+   divNumValues.position(3*windowWidth/5+2*windowWidth/15,0)
+   divNumValues.size(windowWidth/15,windowHeight/16)
+   divNumValues.addClass("divNumValues")
+
 
   //Slider to change the speed of visualization
   sliderSpeed = createSlider(0,99,75)
   sliderSpeed.position(4*windowWidth/5,0)
-  sliderSpeed.size(windowWidth/5,windowHeight/16)
+  sliderSpeed.size(2*windowWidth/15,windowHeight/16)
   sliderSpeed.addClass("slider")
+
+  //Div to indicate that sliderSpeed changes the speed
+  divSpeedText = createDiv("Speed")
+  divSpeedText.position(4*windowWidth/5+2*windowWidth/15,0)
+  divSpeedText.size(windowWidth/15,windowHeight/16)
+  divSpeedText.addClass("divNumValues")
 
   //Select to select the sorting algorithm
   selectSorter = createSelect()
@@ -104,25 +120,19 @@ function setup() {
   buttonSortValues.mousePressed(sorter)
   buttonSortValues.addClass("buttonSort")
 
-  //Set the array
-  setValues(50)
-  numValues = 50
 }
 
 /*
 * Executed every frame
 */
 function draw() {
-  // put drawing code here
 
   background("#219ebc")
 
-
   //Número de valores
-  userNumValues = parseInt(inputNumValues.value())
-  if(numValues != userNumValues && userNumValues > 2 && userNumValues < windowWidth){
-    setValues(userNumValues)
-    numValues = userNumValues
+  if(numValues != sliderNumValues.value()){
+    setValues(sliderNumValues.value())
+    divNumValues.html(sliderNumValues.value())
   }
 
 
