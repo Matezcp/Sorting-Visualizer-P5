@@ -14,4 +14,4 @@ Setup:
 2. Just open index.html
 6. Enjoy :)
 
-You can also test it out [here](https://matezcp.github.io/Sorting-Visualizer-P5/) directly from your computer
+You can also test it out [here](https://matezcp.github.io/Sorting-Visualizer-P5/) directly from your device
