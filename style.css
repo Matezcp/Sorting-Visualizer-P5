@@ -41,3 +41,7 @@ body{padding: 0;margin: 0;overflow: hidden;}
     align-items: center;
     font-size: 1.5vw;
 }
+
+.slider{
+    cursor: pointer;
+}

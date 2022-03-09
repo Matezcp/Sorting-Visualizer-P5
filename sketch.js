@@ -73,6 +73,7 @@ function setup() {
   sliderNumValues = createSlider(3,200,40,1)
   sliderNumValues.position(3*windowWidth/5,0)
   sliderNumValues.size(2*windowWidth/15,windowHeight/16)
+  sliderNumValues.addClass("slider")
   
    //Set the array
    setValues(40)
