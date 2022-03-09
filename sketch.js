@@ -2,7 +2,7 @@
 //Global Variables
 var values // <-- Array to sort
 var types // <-- Type of each value in the array (to color the bars)
-var sliderNumValues // <-- Slider to change the num of values
+var inputNumValues // <-- Input to change num of values
 var sliderSpeed // <-- Slider to change the speed of visualization
 var selectSorter // <-- Select to select the sorting algorithm
 var buttonNewValues // <-- Button to get new values
@@ -66,19 +66,25 @@ function sleep(ms){
 function setup() {
   canva = createCanvas(windowWidth,windowHeight);
 
+  console.log(windowHeight)
+  console.log(windowWidth)
   //Slider to change the num of values
-  sliderNumValues = createSlider(3,100,20,1)
-  sliderNumValues.position(windowWidth/4,10)
-  sliderNumValues.size(windowWidth/6)
+  inputNumValues = createInput("50","number")
+  inputNumValues.attribute("min",3)
+  inputNumValues.attribute("max",windowWidth-1)
+  inputNumValues.position(3*windowWidth/5,0)
+  inputNumValues.size(windowWidth/5,windowHeight/16)
 
   //Slider to change the speed of visualization
   sliderSpeed = createSlider(0,99,75)
-  sliderSpeed.position(windowWidth-2*windowWidth/6,10)
-  sliderSpeed.size(windowWidth/6)
+  sliderSpeed.position(4*windowWidth/5,0)
+  sliderSpeed.size(windowWidth/5,windowHeight/16)
+  sliderSpeed.addClass("slider")
 
   //Select to select the sorting algorithm
   selectSorter = createSelect()
-  selectSorter.position(windowWidth/10,10)
+  selectSorter.position(windowWidth/5,0)
+  selectSorter.size(windowWidth/5,windowHeight/16)
   selectSorter.option("BubbleSort")
   selectSorter.option("Insertion Sort")
   selectSorter.selected("BubbleSort")
@@ -86,19 +92,21 @@ function setup() {
 
   //Button to get new values
   buttonNewValues = createButton("New Values")
-  buttonNewValues.position(10,10)
+  buttonNewValues.position(0,0)
+  buttonNewValues.size(windowWidth/5,windowHeight/16)
   buttonNewValues.mousePressed(newValues)
   buttonNewValues.addClass("buttonNewValues")
 
   //Button to sort the values
   buttonSortValues = createButton("Sort")
-  buttonSortValues.position(windowWidth/2,10)
+  buttonSortValues.position(2*windowWidth/5,0)
+  buttonSortValues.size(windowWidth/5,windowHeight/16)
   buttonSortValues.mousePressed(sorter)
   buttonSortValues.addClass("buttonSort")
 
   //Set the array
-  setValues(round(windowWidth/2))
-  numValues = round(windowWidth/2)
+  setValues(50)
+  numValues = 50
 }
 
 /*
@@ -108,30 +116,13 @@ function draw() {
   // put drawing code here
 
   background("#219ebc")
-  //Menu de opções
-  fill("#fb8500")
-  rect(0,0,windowWidth,windowHeight/20)
 
-  //Infos
-  //#######################
-  //Text of the slider to change the speed of visualization
-  textSize(20)
-  textFont('Arial');
-  textStyle(BOLD);
-  fill(255);
-  text("Speed",windowWidth-windowWidth/6+20,25)
-  //Display num of values
-  textSize(20)
-  textFont('Arial');
-  textStyle(BOLD);
-  fill(255)
-  text(numValues,10*windowWidth/24+20,25)
-  //#######################
 
   //Número de valores
-  if(numValues != sliderNumValues.value()){
-    setValues(sliderNumValues.value())
-    numValues = sliderNumValues.value()
+  userNumValues = parseInt(inputNumValues.value())
+  if(numValues != userNumValues && userNumValues > 2 && userNumValues < windowWidth){
+    setValues(userNumValues)
+    numValues = userNumValues
   }
 
 
@@ -210,4 +201,12 @@ async function insertionSort(){
     values[j+1] = current
   }
 }
+
+/* 
+* Asynchronous QuickSort algorithm
+*/
+async function quickSort(left,rigth){
+
+}
+
 //#####################################
