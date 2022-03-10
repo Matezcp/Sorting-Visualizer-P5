@@ -54,6 +54,9 @@ function sorter(){
   else if(selectValue == "MergeSort"){
     mergeSort(0,numValues-1)
   }
+  else if(selectValue == "Selection Sort"){
+    selectionSort()
+  }
 }
 
 /*
@@ -110,6 +113,7 @@ function setup() {
   selectSorter.size(windowWidth/5,windowHeight/16)
   selectSorter.option("BubbleSort")
   selectSorter.option("Insertion Sort")
+  selectSorter.option("Selection Sort")
   selectSorter.option("QuickSort")
   selectSorter.option("MergeSort")
   selectSorter.selected("BubbleSort")
@@ -373,6 +377,29 @@ async function mergeSort(start,end){
   await mergeSort(middle+1,end)
 
   await merge(start,middle,end)
+}
+
+/*
+* Asynchronous Selection Sort algorithm
+*/
+async function selectionSort(){
+
+  for(let i = 0;i < numValues-1; i++){
+
+    let minIndex = i
+
+    for(let j=i+1;j<numValues;j++){
+      types[j] = 0
+
+      if(values[j] < values[minIndex])
+        minIndex = j
+      
+      await sleep(100-sliderSpeed.value())
+      types[j] = -1
+    }
+    
+    await swap(i,minIndex)
+  }
 }
 
 
