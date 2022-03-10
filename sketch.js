@@ -265,7 +265,9 @@ async function insertionSort(){
 }
 
 /* 
-* Asynchronous QuickSort algorithm
+* Asynchronous Recursive QuickSort algorithm
+* @param start - index that starts the sorting
+* @param end - index that ends the sorting
 */
 async function quickSort(start,end){
   if(start >= end){
