@@ -51,6 +51,9 @@ function sorter(){
   else if(selectValue == "QuickSort"){
     quickSort(0,numValues-1)
   }
+  else if(selectValue == "MergeSort"){
+    mergeSort(0,numValues-1)
+  }
 }
 
 /*
@@ -108,6 +111,7 @@ function setup() {
   selectSorter.option("BubbleSort")
   selectSorter.option("Insertion Sort")
   selectSorter.option("QuickSort")
+  selectSorter.option("MergeSort")
   selectSorter.selected("BubbleSort")
   selectSorter.addClass("select")
 
@@ -222,6 +226,73 @@ async function partition(start,end){
 
   return left
 }
+
+/*
+* Merge the 2 sides of the array for the mergeSort Algorithm
+* @param start - index that is the start of the merge
+* @param middle - index that is the middle of the merge
+* @param end - index that is the end of the merge
+*/
+async function merge(start,middle,end)
+{
+  let temp = Array(end-start+1)
+
+  let indexLeft = start
+  let indexRigth = middle+1
+  let indexArray = start
+
+  while(indexLeft <= middle && indexRigth <= end){
+    types[indexLeft] = 0
+    types[indexRigth] = 0
+
+    if(values[indexLeft] < values[indexRigth]){
+      temp[indexArray] = values[indexLeft]
+      await sleep(100-sliderSpeed.value())
+      types[indexLeft] = -1
+      indexLeft++
+    }
+    else{
+      temp[indexArray] = values[indexRigth]
+      await sleep(100-sliderSpeed.value())
+      types[indexRigth] = -1
+      indexRigth++
+    }
+    indexArray++
+  }
+
+  if(indexLeft > middle){
+    types[indexLeft-1] = -1
+    while(indexRigth <= end){
+      types[indexRigth] = 0
+      temp[indexArray] = values[indexRigth]
+      await sleep(100-sliderSpeed.value())
+      types[indexRigth] = -1
+      indexRigth++
+      indexArray++
+    }
+  }
+  else if(indexRigth > end){
+    types[indexRigth-1] = -1
+    while(indexLeft <= middle){
+      types[indexLeft] = 0
+      temp[indexArray] = values[indexLeft]
+      await sleep(100-sliderSpeed.value())
+      types[indexLeft] = -1
+      indexLeft++
+      indexArray++
+    }
+  }
+
+  types[indexLeft-1] = -1
+  types[indexRigth-1] = -1
+
+  for(let i=start;i<=end;i++){
+    await sleep(100-sliderSpeed.value())
+    values[i] = temp[i]
+  }
+}
+
+
 //#####################################
 
 
@@ -284,5 +355,25 @@ async function quickSort(start,end){
 
   return
 }
+
+/*
+* Asynchronous Recursive MergeSort algorithm
+* @param start - index that starts the sorting
+* @param end - index that ends the sorting
+*/
+async function mergeSort(start,end){
+  if(start >= end){
+    return
+  }
+
+  let middle = parseInt((start+end)/2)
+
+  //await Promise.all([mergeSort(start,middle),mergeSort(middle+1,end)])
+  await mergeSort(start,middle)
+  await mergeSort(middle+1,end)
+
+  await merge(start,middle,end)
+}
+
 
 //#####################################
