@@ -10,8 +10,8 @@ var buttonSortValues // <-- Button to sort the values
 var numValues // <-- Current length of the array values
 var divNumValues// <-- Div to display the current num of values
 var divSpeedText// <-- Div to indicate that sliderSpeed changes the speed
-var labelRecursion// <-- Label to indicate if recursion is active or not
-var checkboxRecursion// <-- Checkbox to active the recursion
+var labelParallel// <-- Label to indicate code will be Parallel or not
+var checkboxParallel// <-- Checkbox to active the Parallelism
 //#####################################
 
 
@@ -44,13 +44,13 @@ function setValues(num){
 function adaptUI(){
   selectValue = selectSorter.value()
   if(selectValue == "MergeSort" || selectValue == "QuickSort"){
-    labelRecursion.style("display", "flex")
+    labelParallel.style("display", "flex")
     selectSorter.position(windowWidth/5+windowWidth/15,0)
     selectSorter.size(2*windowWidth/15,windowHeight/16)
     buttonNewValues.size(windowWidth/10,windowHeight/16)
   }
   else{
-    labelRecursion.style("display", "none")
+    labelParallel.style("display", "none")
     selectSorter.position(windowWidth/5,0)
     selectSorter.size(windowWidth/5,windowHeight/16)
     buttonNewValues.size(windowWidth/5,windowHeight/16)
@@ -158,15 +158,15 @@ function setup() {
   buttonSortValues.mousePressed(sorter)
   buttonSortValues.addClass("buttonSort")
 
-  //Checkbox to active the recursion
-  checkboxRecursion = select("#recursionCheckbox")
-  checkboxRecursion.position(windowWidth/10,0)
-  checkboxRecursion.size(windowWidth/10+windowWidth/15,windowHeight/16)
+  //Checkbox to active the Parallelism
+  checkboxParallel = select("#parallelCheckbox")
+  checkboxParallel.position(windowWidth/10,0)
+  checkboxParallel.size(windowWidth/10+windowWidth/15,windowHeight/16)
 
-  // Label to indicate if recursion is active or not
-  labelRecursion = select("#recursionLabel")
-  labelRecursion.position(windowWidth/10,0)
-  labelRecursion.size(windowWidth/10+windowWidth/15,windowHeight/16)
+  // Label to indicate code will be Parallel or not
+  labelParallel = select("#parallelLabel")
+  labelParallel.position(windowWidth/10,0)
+  labelParallel.size(windowWidth/10+windowWidth/15,windowHeight/16)
 
   //Adapt the UI initially
   adaptUI()
@@ -334,6 +334,11 @@ async function merge(start,middle,end)
   }
 }
 
+/*
+* Function that takes an array and heapify it from a given index
+* @param numNodes - number of nodes that the heap have
+* @param node - index of the node we are analyzing
+*/
 async function heapify(numNodes,node){
 
   let largest = node
@@ -364,6 +369,9 @@ async function heapify(numNodes,node){
   types[node] = -1
 }
 
+/*
+* Initially make the array a binary heap
+*/
 async function buildHeap(){
   for (let i = Math.floor(numValues / 2) - 1; i >= 0; i--){
     await heapify(numValues, i);
@@ -428,8 +436,8 @@ async function quickSort(start,end){
   types[pivotIndex] = -1
 
 
-  if(checkboxRecursion.checked()){
-    //True recursive
+  if(checkboxParallel.checked()){
+    //Parallel
     await Promise.all([quickSort(start,pivotIndex-1),quickSort(pivotIndex+1,end)])
   }
   else{
@@ -452,8 +460,8 @@ async function mergeSort(start,end){
 
   let middle = parseInt((start+end)/2)
 
-  if(checkboxRecursion.checked()){
-    //True recursive
+  if(checkboxParallel.checked()){
+    //Parallel
     await Promise.all([mergeSort(start,middle),mergeSort(middle+1,end)])
   }
   else{
