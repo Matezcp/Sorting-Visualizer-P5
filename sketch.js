@@ -10,6 +10,8 @@ var buttonSortValues // <-- Button to sort the values
 var numValues // <-- Current length of the array values
 var divNumValues// <-- Div to display the current num of values
 var divSpeedText// <-- Div to indicate that sliderSpeed changes the speed
+var labelRecursion// <-- Label to indicate if recursion is active or not
+var checkboxRecursion// <-- Checkbox to active the recursion
 //#####################################
 
 
@@ -37,11 +39,29 @@ function setValues(num){
 }
 
 /*
+* Adapt the UI depending which algorithm is been used
+*/
+function adaptUI(){
+  selectValue = selectSorter.value()
+  if(selectValue == "MergeSort" || selectValue == "QuickSort"){
+    labelRecursion.style("display", "flex")
+    selectSorter.position(windowWidth/5+windowWidth/15,0)
+    selectSorter.size(2*windowWidth/15,windowHeight/16)
+    buttonNewValues.size(windowWidth/10,windowHeight/16)
+  }
+  else{
+    labelRecursion.style("display", "none")
+    selectSorter.position(windowWidth/5,0)
+    selectSorter.size(windowWidth/5,windowHeight/16)
+    buttonNewValues.size(windowWidth/5,windowHeight/16)
+  }
+}
+
+/*
 * Set the var sorter to the select sorter
 */
 function sorter(){
   selectValue = selectSorter.value()
-  console.log(selectValue)
   if(selectValue == "BubbleSort"){
     bubbleSort()
   }
@@ -117,6 +137,7 @@ function setup() {
   selectSorter.option("QuickSort")
   selectSorter.option("MergeSort")
   selectSorter.selected("BubbleSort")
+  selectSorter.changed(adaptUI)
   selectSorter.addClass("select")
 
   //Button to get new values
@@ -132,6 +153,19 @@ function setup() {
   buttonSortValues.size(windowWidth/5,windowHeight/16)
   buttonSortValues.mousePressed(sorter)
   buttonSortValues.addClass("buttonSort")
+
+  //Checkbox to active the recursion
+  checkboxRecursion = select("#recursionCheckbox")
+  checkboxRecursion.position(windowWidth/10,0)
+  checkboxRecursion.size(windowWidth/10+windowWidth/15,windowHeight/16)
+
+  // Label to indicate if recursion is active or not
+  labelRecursion = select("#recursionLabel")
+  labelRecursion.position(windowWidth/10,0)
+  labelRecursion.size(windowWidth/10+windowWidth/15,windowHeight/16)
+
+  //Adapt the UI initially
+  adaptUI()
 }
 
 /*
@@ -353,9 +387,15 @@ async function quickSort(start,end){
 
   types[pivotIndex] = -1
 
-  //await Promise.all([quickSort(start,pivotIndex-1),quickSort(pivotIndex+1,end)])
-  await quickSort(start,pivotIndex-1)
-  await quickSort(pivotIndex+1,end)
+
+  if(checkboxRecursion.checked()){
+    //True recursive
+    await Promise.all([quickSort(start,pivotIndex-1),quickSort(pivotIndex+1,end)])
+  }
+  else{
+    await quickSort(start,pivotIndex-1)
+    await quickSort(pivotIndex+1,end)
+  }
 
   return
 }
@@ -372,9 +412,14 @@ async function mergeSort(start,end){
 
   let middle = parseInt((start+end)/2)
 
-  //await Promise.all([mergeSort(start,middle),mergeSort(middle+1,end)])
-  await mergeSort(start,middle)
-  await mergeSort(middle+1,end)
+  if(checkboxRecursion.checked()){
+    //True recursive
+    await Promise.all([mergeSort(start,middle),mergeSort(middle+1,end)])
+  }
+  else{
+    await mergeSort(start,middle)
+    await mergeSort(middle+1,end)
+  }
 
   await merge(start,middle,end)
 }

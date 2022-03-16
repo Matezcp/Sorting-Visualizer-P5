@@ -72,3 +72,29 @@ body{padding: 0;margin: 0;overflow: hidden;}
     -webkit-appearance: none;
     margin-top: -0.5px;
 }
+
+label {
+    font-weight: bold;
+    color: #000000;
+    background: #63b8ee;
+    font-size: 1.5vw;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+label:hover{
+    color: #000000;
+    background: #468ccf;
+}
+
+input[type=checkbox]{
+    display: none;
+}
+
+
+input:checked + label{
+    background: #0e2b46;
+    color: #63b8ee;
+} 
