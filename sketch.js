@@ -77,6 +77,9 @@ function sorter(){
   else if(selectValue == "Selection Sort"){
     selectionSort()
   }
+  else if(selectValue == "HeapSort"){
+    heapSort()
+  }
 }
 
 /*
@@ -136,6 +139,7 @@ function setup() {
   selectSorter.option("Selection Sort")
   selectSorter.option("QuickSort")
   selectSorter.option("MergeSort")
+  selectSorter.option("HeapSort")
   selectSorter.selected("BubbleSort")
   selectSorter.changed(adaptUI)
   selectSorter.addClass("select")
@@ -330,6 +334,42 @@ async function merge(start,middle,end)
   }
 }
 
+async function heapify(numNodes,node){
+
+  let largest = node
+  let leftChild = node*2+1
+  let rightChild = node*2+2
+
+  types[node] = 0
+
+  if(leftChild < numNodes && values[leftChild] > values[largest]){
+    await sleep(100-sliderSpeed.value())
+    types[largest] = -1
+    largest = leftChild
+    types[largest] = 0
+  }
+  
+  if(rightChild < numNodes && values[rightChild] > values[largest]){
+    await sleep(100-sliderSpeed.value())
+    types[largest] = -1
+    largest = rightChild
+    types[largest] = 0
+  }
+
+  if(largest != node){
+    await swap(node,largest)
+    await heapify(numNodes,largest)
+  }
+
+  types[node] = -1
+}
+
+async function buildHeap(){
+  for (let i = Math.floor(numValues / 2) - 1; i >= 0; i--){
+    await heapify(numValues, i);
+  }
+}
+
 
 //#####################################
 
@@ -445,6 +485,17 @@ async function selectionSort(){
     
     await swap(i,minIndex)
   }
+}
+
+async function heapSort(){
+
+  await buildHeap()
+  
+  for(let i=numValues-1;i>0;i--){
+    await swap(0,i)
+    await heapify(i,0)
+  }
+
 }
 
 
