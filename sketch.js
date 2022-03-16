@@ -495,6 +495,9 @@ async function selectionSort(){
   }
 }
 
+/*
+* Asynchronous HeapSort algorithm
+*/
 async function heapSort(){
 
   await buildHeap()
